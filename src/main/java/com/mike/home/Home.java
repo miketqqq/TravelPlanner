@@ -8,7 +8,7 @@ public class Home {
 
     @GetMapping("/")
     public String home(){
-        return "<a>http://localhost:5550/plans</a>";
+        return "<a href=\"http://localhost:5550/plans\">plan</a>";
     }
 
 }

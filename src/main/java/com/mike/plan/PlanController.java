@@ -13,24 +13,25 @@ public class PlanController {
     @Autowired
     private PlanService planService;
 
-    @GetMapping("/test")
-    public String home(){
-        return "{\"a\" : \"b\" \r\n \"c\"}";
-    }
 
     @GetMapping("")
     public List<PlanModel> getAllPlans(){
         return planService.getAllPlans();
     }
 
-    @PostMapping()
+    @GetMapping("/{id}")
+    public Optional<PlanModel> getPlan(@PathVariable("id") Long id){
+        return planService.getPlan(id);
+    }
+
+    @PostMapping("")
     public PlanModel newPlan(@RequestBody PlanModel plan){
         return planService.newPlan(plan);
     }
 
-    @GetMapping("/{id}")
-    public Optional<PlanModel> getPlan(@PathVariable("id") Long id){
-        return planService.getPlan(id);
+    @PutMapping("/{id}")
+    public PlanModel updatePlan(@PathVariable("id") Long id, @RequestBody PlanModel plan){
+        return planService.updatePlan(id, plan);
     }
 
     @DeleteMapping("/{id}")
