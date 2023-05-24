@@ -15,22 +15,22 @@ public class PlanController {
 
 
     @GetMapping("")
-    public List<PlanModel> getAllPlans(){
+    public List<Plan> getAllPlans(){
         return planService.getAllPlans();
     }
 
     @GetMapping("/{id}")
-    public Optional<PlanModel> getPlan(@PathVariable("id") Long id){
+    public Optional<Plan> getPlan(@PathVariable("id") Long id){
         return planService.getPlan(id);
     }
 
     @PostMapping("")
-    public PlanModel newPlan(@RequestBody PlanModel plan){
-        return planService.newPlan(plan);
+    public Plan newPlan(@RequestBody Plan plan){
+        return planService.createPlan(plan);
     }
 
     @PutMapping("/{id}")
-    public PlanModel updatePlan(@PathVariable("id") Long id, @RequestBody PlanModel plan){
+    public Plan updatePlan(@PathVariable("id") Long id, @RequestBody Plan plan){
         return planService.updatePlan(id, plan);
     }
 

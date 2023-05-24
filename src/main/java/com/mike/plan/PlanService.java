@@ -1,6 +1,6 @@
 package com.mike.plan;
 
-import com.mike.dailyjourney.DailyJourneyModel;
+import com.mike.dailyjourney.DailyJourney;
 import com.mike.dailyjourney.DailyJourneyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,50 +17,64 @@ public class PlanService {
     @Autowired
     private DailyJourneyRepository dailyJourneyRepository;
 
-    public List<PlanModel> getAllPlans(){
+    public List<Plan> getAllPlans(){
         if (planRepository.count() == 0){
 
             LocalDate now = LocalDate.of(2023,5,18);
-            PlanModel plan = new PlanModel("japan 5days", "japan", now, now);
-            PlanModel plan2 = new PlanModel("taiwan 5days", "taiwan", now, now);
-            PlanModel plan3 = new PlanModel("HK 5days", "HK", now, now);
+            Plan plan = new Plan("japan 5days", "japan", now, now);
+            Plan plan2 = new Plan("taiwan 5days", "taiwan", now, now);
+            Plan plan3 = new Plan("HK 5days", "HK", now, now);
 
             planRepository.save(plan);
             planRepository.save(plan2);
             planRepository.save(plan3);
         }
 
-        List<PlanModel> dailyJourneyModelList = new ArrayList<>();
+        List<Plan> dailyJourneyModelList = new ArrayList<>();
         planRepository.findAll().forEach(dailyJourneyModelList::add);
         return dailyJourneyModelList;
     }
 
-    public PlanModel newPlan(PlanModel plan){
-        plan.setDuration();  //may override save() method in repository
-        PlanModel newPlan = planRepository.save(plan);
+    public Plan createPlan(Plan plan){
+        //plan.setDuration();  //may override save() method in repository
+        Plan newPlan;
+        Long id;
 
-        ArrayList<DailyJourneyModel> newJourneys = PlanJourneyHandler.createJourneys(newPlan);
-        dailyJourneyRepository.saveAll(newJourneys);
+        //if plan already exist, just save it.
+        if ((id = plan.getId()) != null && planRepository.findById(id).isPresent()){
+            //return responseEntity saying that object exist
+            newPlan = planRepository.save(plan);
+        } else {
+            newPlan = planRepository.save(plan);
+            //ArrayList<DailyJourney> newJourneys = PlanJourneyHandler.createJourneys(newPlan);
+            //dailyJourneyRepository.saveAll(newJourneys);
+        }
+
         return newPlan;
     }
 
-    public Optional<PlanModel> getPlan(Long id){
+    public Optional<Plan> getPlan(Long id){
         return planRepository.findById(id);
     }
 
-    public PlanModel updatePlan(Long id, PlanModel plan){
+    public Plan updatePlan(Long id, Plan plan){
         if (planRepository.findById(id).isEmpty()) {
             return null;
         }
         plan.setId(id);
-        plan.setDuration();
+        //plan.setDuration();
         return planRepository.save(plan);
     }
 
 
     public String removePlan(Long id){
-        planRepository.deleteById(id);
-        return "ok";
+        if (planRepository.findById(id).isPresent()){
+            planRepository.deleteById(id);
+            return "ok";
+        } else {
+            return "no record is deleted";
+        }
+
     }
 
 

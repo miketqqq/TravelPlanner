@@ -14,19 +14,19 @@ public class DailyJourneyService {
     private DailyJourneyRepository dailyJourneyRepository;
 
 
-    public List<DailyJourneyModel> getAllDailyJourneys(){
-        List<DailyJourneyModel> dailyJourneyModelList = new ArrayList<>();
-        dailyJourneyRepository.findAll().forEach(dailyJourneyModelList::add);
-        return dailyJourneyModelList;
+    public List<DailyJourney> getAllDailyJourneys(){
+        List<DailyJourney> dailyJourneyList = new ArrayList<>();
+        dailyJourneyRepository.findAll().forEach(dailyJourneyList::add);
+        return dailyJourneyList;
     }
 
     // no newDailyJourney is needed.
 
-    public Optional<DailyJourneyModel> getDailyJourney(Long id){
+    public Optional<DailyJourney> getDailyJourney(Long id){
         return dailyJourneyRepository.findById(id);
     }
 
-    public DailyJourneyModel updateDailyJourney(Long id, DailyJourneyModel dailyJourney){
+    public DailyJourney updateDailyJourney(Long id, DailyJourney dailyJourney){
         dailyJourney.setId(id);
         return dailyJourneyRepository.save(dailyJourney);
     }

@@ -2,5 +2,10 @@ package com.mike.dailyjourney;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface DailyJourneyRepository extends CrudRepository<DailyJourneyModel, Long> {
+import java.time.LocalDate;
+
+public interface DailyJourneyRepository extends CrudRepository<DailyJourney, Long> {
+
+    DailyJourney findByDate(LocalDate date);
+
 }

@@ -1,25 +1,18 @@
 package com.mike.plan;
 
-import com.mike.dailyjourney.DailyJourneyModel;
-import com.mike.dailyjourney.DailyJourneyRepository;
+import com.mike.dailyjourney.DailyJourney;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@Entity
-public class PlanModel {
+@Entity @EntityListeners(PlanListener.class)
+public class Plan {
 
-
-    @Id @GeneratedValue()
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -38,15 +31,22 @@ public class PlanModel {
     @Column(nullable = false)
     private int duration;
 
-    public PlanModel() {}
+    @OneToMany(mappedBy = "plan")
+    private List<DailyJourney> DailyJourneyList;
 
-    public PlanModel(String name, String country, LocalDate startDate, LocalDate endDate) {
+
+    public Plan() {}
+
+    public Plan(String name, String country, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.country = country;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.duration = (int) DAYS.between(this.startDate, this.endDate) + 1;
+    }
 
+    @Override
+    public String toString(){
+        return "Plan[" + "name=" + this.name + "]";
     }
 
     public Long getId() {
@@ -88,7 +88,6 @@ public class PlanModel {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-
 
     public int getDuration() {
         return duration;

@@ -1,7 +1,6 @@
 package com.mike.dailyjourney;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mike.plan.PlanModel;
+import com.mike.plan.Plan;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,16 +8,16 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 
 @Entity
-public class DailyJourneyModel {
+public class DailyJourney {
 
     // for each day in a plan
-    @Id @GeneratedValue()
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = PlanModel.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="plan_id")  //nullable = false, updatable=false,insertable=false
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private PlanModel plan;
+    @ManyToOne(targetEntity=Plan.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="plan_id", nullable=false)  //updatable=false,insertable=false
+    @OnDelete(action=OnDeleteAction.CASCADE)
+    private Plan plan;
 
     @Column(nullable = false)
     private int dayCount;
@@ -26,10 +25,10 @@ public class DailyJourneyModel {
     @Column(nullable = false)
     private LocalDate date;
 
-    public DailyJourneyModel() {
+    public DailyJourney() {
     }
 
-    public DailyJourneyModel(PlanModel plan, int dayCount, LocalDate date) {
+    public DailyJourney(Plan plan, int dayCount, LocalDate date) {
         this.plan = plan;
         this.dayCount = dayCount;
         this.date = date;
@@ -47,7 +46,7 @@ public class DailyJourneyModel {
         return plan.getId();
     }
 
-    public void setPlan(PlanModel plan) {
+    public void setPlan(Plan plan) {
         this.plan = plan;
     }
 

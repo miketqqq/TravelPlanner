@@ -15,25 +15,27 @@ public class DailyJourneyController {
 
 
     @GetMapping("")
-    public List<DailyJourneyModel> getDailyJourneys(){
+    public List<DailyJourney> getDailyJourneys(){
+        //TODO: get journey by plan id
         return dailyJourneyService.getAllDailyJourneys();
     }
 
     @GetMapping("/{id}")
-    public Optional<DailyJourneyModel> getDailyJourney(@PathVariable("id") Long id){
+    public Optional<DailyJourney> getDailyJourney(@PathVariable("id") Long id){
         return dailyJourneyService.getDailyJourney(id);
     }
 
-    // no newDailyJourney is needed
+    // no createDailyJourney is needed
 
     @PutMapping("/{id}")
-    public DailyJourneyModel updateDailyJourney(@PathVariable("id") Long id, @RequestBody DailyJourneyModel dailyJourney){
+    public DailyJourney updateDailyJourney(@PathVariable("id") Long id, @RequestBody DailyJourney dailyJourney){
         return dailyJourneyService.updateDailyJourney(id, dailyJourney);
     }
 
-    @DeleteMapping("/{id}")
-    public String removeDailyJourney(@PathVariable("id") Long id){
-        return dailyJourneyService.removeDailyJourney(id);
-    }
+      // no delete is needed, but may need a clear journey.
+//    @DeleteMapping("/{id}")
+//    public String removeDailyJourney(@PathVariable("id") Long id){
+//        return dailyJourneyService.removeDailyJourney(id);
+//    }
 
 }

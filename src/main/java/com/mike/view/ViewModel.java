@@ -1,6 +1,6 @@
 package com.mike.view;
 
-import com.mike.dailyjourney.DailyJourneyModel;
+import com.mike.dailyjourney.DailyJourney;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -14,9 +14,9 @@ public class ViewModel {
     @Id
     private Long id;
 
-    @ManyToOne(targetEntity = DailyJourneyModel.class)
+    @ManyToOne(targetEntity = DailyJourney.class)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private DailyJourneyModel journey_id;
+    private DailyJourney journey_id;
 
     @Column
     private String  category;  //to be foreign key
