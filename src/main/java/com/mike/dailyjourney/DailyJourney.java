@@ -1,11 +1,13 @@
 package com.mike.dailyjourney;
 
 import com.mike.plan.Plan;
+import com.mike.view.View;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class DailyJourney {
@@ -14,8 +16,10 @@ public class DailyJourney {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    //if nullable=false, plan must be saved before journey is saved.
+    //such that the plan.id exist for journey to reference. or use cascade.ALL in plan
     @ManyToOne(targetEntity=Plan.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="plan_id", nullable=false)  //updatable=false,insertable=false
+    @JoinColumn(name="plan_id")  //updatable=false
     @OnDelete(action=OnDeleteAction.CASCADE)
     private Plan plan;
 
@@ -24,6 +28,9 @@ public class DailyJourney {
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @OneToMany(mappedBy = "dailyJourney")
+    private List<View> View;
 
     public DailyJourney() {
     }

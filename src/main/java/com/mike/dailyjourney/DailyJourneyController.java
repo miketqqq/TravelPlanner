@@ -3,6 +3,7 @@ package com.mike.dailyjourney;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,13 @@ public class DailyJourneyController {
 
 
     @GetMapping("")
-    public List<DailyJourney> getDailyJourneys(){
+    public List<DailyJourney> getDailyJourneys(
+            @RequestParam(required=false, name="date") String dateStr
+    ){
+        if (dateStr != null) {
+            LocalDate date = LocalDate.parse(dateStr);
+            return dailyJourneyService.getDailyJourneysByDate(date);
+        }
         //TODO: get journey by plan id
         return dailyJourneyService.getAllDailyJourneys();
     }

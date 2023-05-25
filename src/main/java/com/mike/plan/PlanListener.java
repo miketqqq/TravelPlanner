@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @Component
 public class PlanListener {
+
+    private static final Logger logger = Logger.getLogger("PlanListener");
 
     private static DailyJourneyRepository dailyJourneyRepository;
 
@@ -28,6 +31,7 @@ public class PlanListener {
     @PostPersist
     public void postPersist(Plan plan) {
         ArrayList<DailyJourney> newJourneys = PlanJourneyHandler.createJourneys(plan);
+        logger.info(String.valueOf(newJourneys.size()) + " new journeys are created @PostPersist");
         PlanListener.dailyJourneyRepository.saveAll(newJourneys);
     }
 

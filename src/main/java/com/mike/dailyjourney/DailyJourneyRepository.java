@@ -6,6 +6,6 @@ import java.time.LocalDate;
 
 public interface DailyJourneyRepository extends CrudRepository<DailyJourney, Long> {
 
-    DailyJourney findByDate(LocalDate date);
+    Iterable<DailyJourney> findByDate(LocalDate date);
 
 }
