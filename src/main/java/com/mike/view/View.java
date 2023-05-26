@@ -32,6 +32,10 @@ public class View {
     @Column
     private String remarks;
 
+    public Long getId(){ return id;}
+
+    public void setId(Long id){ this.id = id;}
+
     public Long getDailyJourney() {
         return dailyJourney.getId();
     }

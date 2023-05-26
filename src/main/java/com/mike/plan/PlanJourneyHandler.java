@@ -11,13 +11,13 @@ public class PlanJourneyHandler {
         int duration = plan.getDuration();
         LocalDate endDate = plan.getEndDate();
         LocalDate startDate = plan.getStartDate();
-        int i = 1;
+        int dayCount = 1;
 
         ArrayList<DailyJourney> journeys = new ArrayList<>(duration);
         for (LocalDate date = startDate; !date.isAfter(endDate); date=date.plusDays(1)){
-            DailyJourney dailyJourney = new DailyJourney(plan, i, date);
+            DailyJourney dailyJourney = new DailyJourney(plan, dayCount, date);
             journeys.add(dailyJourney);
-            i++;
+            dayCount++;
         }
         return journeys;
     }

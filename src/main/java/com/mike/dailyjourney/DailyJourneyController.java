@@ -17,19 +17,29 @@ public class DailyJourneyController {
 
     @GetMapping("")
     public List<DailyJourney> getDailyJourneys(
-            @RequestParam(required=false, name="date") String dateStr
+            @RequestParam(required=false, name="date") String dateStr,
+            @RequestParam(required=false, name="plan_id") Long plan_id
     ){
+        List<DailyJourney> dailyJourneys = dailyJourneyService.getAllDailyJourneys();
         if (dateStr != null) {
             LocalDate date = LocalDate.parse(dateStr);
-            return dailyJourneyService.getDailyJourneysByDate(date);
+            dailyJourneys = dailyJourneys.stream().filter(journey -> journey.getDate().isEqual(date)).toList();
         }
-        //TODO: get journey by plan id
-        return dailyJourneyService.getAllDailyJourneys();
+        if (plan_id != null) {
+            dailyJourneys = dailyJourneys.stream().filter(journey -> journey.getPlan() == plan_id).toList();
+            //return dailyJourneyService.getDailyJourneysByPlanId(plan_id);
+        }
+        return dailyJourneys;
     }
 
     @GetMapping("/{id}")
     public Optional<DailyJourney> getDailyJourney(@PathVariable("id") Long id){
         return dailyJourneyService.getDailyJourney(id);
+    }
+
+    @GetMapping("/plan/{plan_id}")
+    public List<DailyJourney> getDailyJourneysByPlanId(@PathVariable("plan_id") Long id){
+        return dailyJourneyService.getDailyJourneysByPlanId(id);
     }
 
     // no createDailyJourney is needed
