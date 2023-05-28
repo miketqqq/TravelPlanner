@@ -1,12 +1,13 @@
 package com.mike.dailyjourney;
 
-import com.mike.plan.Plan;
+import com.mike.numberofday.NumberOfDay;
 import com.mike.view.View;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,27 +19,20 @@ public class DailyJourney {
 
     //if nullable=false, plan must be saved before journey is saved.
     //such that the plan.id exist for journey to reference. or use cascade.ALL in plan
-    @ManyToOne(targetEntity=Plan.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="plan_id")  //updatable=false
+    @OneToOne(targetEntity=NumberOfDay.class, mappedBy="dailyJourney")
     @OnDelete(action=OnDeleteAction.CASCADE)
-    private Plan plan;
+    private NumberOfDay numberOfDay;
 
-    @Column(nullable = false)
-    private int dayCount;
-
-    @Column(nullable = false)
-    private LocalDate date;
-
-    @OneToMany(mappedBy = "dailyJourney")
+    @OneToMany(mappedBy="dailyJourney")
+    @Cascade(CascadeType.DELETE)
     private List<View> View;
+
 
     public DailyJourney() {
     }
 
-    public DailyJourney(Plan plan, int dayCount, LocalDate date) {
-        this.plan = plan;
-        this.dayCount = dayCount;
-        this.date = date;
+    public DailyJourney(NumberOfDay numberOfDay) {
+        this.numberOfDay = numberOfDay;
     }
 
     public Long getId() {
@@ -49,28 +43,20 @@ public class DailyJourney {
         this.id = id;
     }
 
-    public long getPlan() {
-        return plan.getId();
-    }
-
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
-
     public int getDayCount() {
-        return dayCount;
+        return numberOfDay.getDayNumber();
     }
 
-    public void setDayCount(int dayCount) {
-        this.dayCount = dayCount;
+    public void setDayCount(NumberOfDay numberOfDay) {
+        this.numberOfDay = numberOfDay;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public List<View> getView() {
+        return View;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setView(List<View> view) {
+        View = view;
     }
 
 }

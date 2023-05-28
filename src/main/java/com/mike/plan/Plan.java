@@ -1,7 +1,6 @@
 package com.mike.plan;
 
-import com.mike.dailyjourney.DailyJourney;
-
+import com.mike.numberofday.NumberOfDay;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -32,7 +31,7 @@ public class Plan {
     private int duration;
 
     @OneToMany(mappedBy = "plan")
-    private List<DailyJourney> DailyJourneyList;
+    private List<NumberOfDay> numberOfDayList;
 
 
     public Plan() {}

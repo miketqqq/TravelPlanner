@@ -36,7 +36,6 @@ public class PlanService {
     }
 
     public Plan createPlan(Plan plan){
-        //plan.setDuration();  //may override save() method in repository
         Plan newPlan;
         Long id;
 
@@ -46,8 +45,6 @@ public class PlanService {
             newPlan = planRepository.save(plan);
         } else {
             newPlan = planRepository.save(plan);
-            //ArrayList<DailyJourney> newJourneys = PlanJourneyHandler.createJourneys(newPlan);
-            //dailyJourneyRepository.saveAll(newJourneys);
         }
 
         return newPlan;
@@ -62,7 +59,8 @@ public class PlanService {
             return null;
         }
         plan.setId(id);
-        //plan.setDuration();
+//        LocalDate startDate = plan.getStartDate();
+//        LocalDate endDate = plan.getEndDate();
         return planRepository.save(plan);
     }
 

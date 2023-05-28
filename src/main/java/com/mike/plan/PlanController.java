@@ -1,5 +1,7 @@
 package com.mike.plan;
 
+import com.mike.numberofday.NumberOfDay;
+import com.mike.numberofday.NumberOfDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,9 @@ public class PlanController {
 
     @Autowired
     private PlanService planService;
+
+    @Autowired
+    private NumberOfDayService numberOfDayService;
 
 
     @GetMapping("")
@@ -38,5 +43,16 @@ public class PlanController {
     public String removePlan(@PathVariable("id") Long id){
         return planService.removePlan(id);
     }
+
+    @GetMapping("/{plan_id}/days/{dayNumber}")
+    public NumberOfDay getDay(
+        @PathVariable("plan_id") Long plan_id,
+        @PathVariable("dayNumber") int dayNumber
+    ){
+        return numberOfDayService.getDay(plan_id, dayNumber);
+    }
+
+
+
 
 }

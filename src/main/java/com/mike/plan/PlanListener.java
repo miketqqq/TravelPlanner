@@ -1,7 +1,7 @@
 package com.mike.plan;
 
-import com.mike.dailyjourney.DailyJourney;
-import com.mike.dailyjourney.DailyJourneyRepository;
+import com.mike.numberofday.NumberOfDay;
+import com.mike.numberofday.NumberOfDayRepository;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -16,11 +16,11 @@ public class PlanListener {
 
     private static final Logger logger = Logger.getLogger("PlanListener");
 
-    private static DailyJourneyRepository dailyJourneyRepository;
+    private static NumberOfDayRepository numberOfDayRepository;
 
     @Autowired
-    public void setDailyJourneyRepository(DailyJourneyRepository dailyJourneyRepository) {
-        PlanListener.dailyJourneyRepository = dailyJourneyRepository;
+    public void setNumberOfDayRepository(NumberOfDayRepository numberOfDayRepository) {
+        PlanListener.numberOfDayRepository = numberOfDayRepository;
     }
 
     @PrePersist @PreUpdate
@@ -30,9 +30,9 @@ public class PlanListener {
 
     @PostPersist
     public void postPersist(Plan plan) {
-        ArrayList<DailyJourney> newJourneys = PlanJourneyHandler.createJourneys(plan);
-        logger.info(String.valueOf(newJourneys.size()) + " new journeys are created @PostPersist");
-        PlanListener.dailyJourneyRepository.saveAll(newJourneys);
+        ArrayList<NumberOfDay> newNumberOfDays = PlanDayHandler.createNumberOfDays(plan);
+        logger.info(String.valueOf(newNumberOfDays.size()) + " new NumberOfDays are created @PostPersist");
+        PlanListener.numberOfDayRepository.saveAll(newNumberOfDays);
     }
 
 }

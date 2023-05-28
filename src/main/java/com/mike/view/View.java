@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 public class View {
@@ -21,13 +21,14 @@ public class View {
     @Column
     private String category;  //to be foreign key
 
-    //private invoiceModel invoice_id;  //foreign key
+    @Column(nullable = false)
+    private String viewpoint;
 
     @Column
-    private LocalDate startTime;
+    private LocalTime startTime;
 
     @Column
-    private LocalDate endTime;
+    private LocalTime endTime;
 
     @Column
     private String remarks;
@@ -52,19 +53,27 @@ public class View {
         this.category = category;
     }
 
-    public LocalDate getStartTime() {
+    public String getViewpoint() {
+        return viewpoint;
+    }
+
+    public void setViewpoint(String viewpoint) {
+        this.viewpoint = viewpoint;
+    }
+
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDate start_time) {
+    public void setStartTime(LocalTime start_time) {
         this.startTime = start_time;
     }
 
-    public LocalDate getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDate end_time) {
+    public void setEndTime(LocalTime end_time) {
         this.endTime = end_time;
     }
 

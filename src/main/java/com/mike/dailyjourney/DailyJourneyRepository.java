@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 public interface DailyJourneyRepository extends CrudRepository<DailyJourney, Long> {
 
-    Iterable<DailyJourney> findByDate(LocalDate date);
+    //Iterable<DailyJourney> findByDate(LocalDate date);
 
-    Iterable<DailyJourney> findByPlan(Plan plan);
+    //Iterable<DailyJourney> findByPlan(Plan plan);
 
-    Iterable<DailyJourney> findAllByPlanId(Long id);
+    //Iterable<DailyJourney> findAllByPlanId(Long id);
 
 }
