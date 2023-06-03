@@ -26,7 +26,7 @@ public class Plan {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    //auto generated when plan is created. to be change when start/end date changed.
+    //auto generated when plan is created.
     @Column(nullable = false)
     private int duration;
 

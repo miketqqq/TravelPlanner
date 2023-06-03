@@ -3,6 +3,7 @@ package com.mike.plan;
 import com.mike.numberofday.NumberOfDay;
 import com.mike.numberofday.NumberOfDayRepository;
 import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class PlanListener {
         ArrayList<NumberOfDay> newNumberOfDays = PlanDayHandler.createNumberOfDays(plan);
         logger.info(String.valueOf(newNumberOfDays.size()) + " new NumberOfDays are created @PostPersist");
         PlanListener.numberOfDayRepository.saveAll(newNumberOfDays);
+    }
+
+    @PostUpdate
+    public void postUpdate(Plan plan){
+        // check if date changed.
+
     }
 
 }

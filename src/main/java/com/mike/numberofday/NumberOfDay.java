@@ -3,7 +3,9 @@ package com.mike.numberofday;
 import com.mike.dailyjourney.DailyJourney;
 import com.mike.plan.Plan;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ public class NumberOfDay {
 
     @OneToOne(targetEntity=DailyJourney.class)
     @JoinColumn(name="daily_journey_id")
+    @Cascade(CascadeType.ALL)
     private DailyJourney dailyJourney;
 
     public NumberOfDay() {}
@@ -71,12 +74,8 @@ public class NumberOfDay {
         this.plan = plan;
     }
 
-    public Long getDailyJourney() {
-        if (this.dailyJourney != null){
-            return dailyJourney.getId();
-        } else {
-            return null;
-        }
+    public DailyJourney getDailyJourney() {
+            return dailyJourney;
     }
 
     public void setDailyJourney(DailyJourney dailyJourney) {
