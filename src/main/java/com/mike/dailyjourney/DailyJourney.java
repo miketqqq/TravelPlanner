@@ -5,8 +5,7 @@ import com.mike.view.View;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 import java.util.List;
 
@@ -17,14 +16,11 @@ public class DailyJourney {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    //if nullable=false, plan must be saved before journey is saved.
-    //such that the plan.id exist for journey to reference. or use cascade.ALL in plan
     @OneToOne(targetEntity=NumberOfDay.class, mappedBy="dailyJourney")
-    @OnDelete(action=OnDeleteAction.CASCADE)
     private NumberOfDay numberOfDay;
 
-    @OneToMany(mappedBy="dailyJourney")
-    @Cascade(CascadeType.DELETE)
+    @OneToMany(mappedBy="dailyJourney", fetch=FetchType.EAGER)
+    @Cascade(CascadeType.ALL)
     private List<View> View;
 
 

@@ -16,7 +16,7 @@ public class PlanDayHandler {
 
         ArrayList<NumberOfDay> numberOfDays = new ArrayList<>(duration);
         for (LocalDate date=startDate; !date.isAfter(endDate); date=date.plusDays(1)){
-            NumberOfDay numberOfDay = new NumberOfDay(plan, date, day);
+            NumberOfDay numberOfDay = new NumberOfDay(plan, day);
             numberOfDay.setDailyJourney(new DailyJourney());
             numberOfDays.add(numberOfDay);
             day++;

@@ -4,9 +4,7 @@ import com.mike.dailyjourney.DailyJourney;
 import com.mike.plan.Plan;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -16,18 +14,16 @@ public class NumberOfDay {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    //if nullable=false, plan must be saved before journey is saved.
-    //such that the plan.id exist for journey to reference. or use cascade.ALL in plan
+    //if nullable=false, plan must be saved before day is saved.
+    //such that the plan.id exist for day to reference. or use cascade.ALL in plan
     @ManyToOne(targetEntity=Plan.class, fetch=FetchType.LAZY)
     @JoinColumn(name="plan_id")  //updatable=false
-    @OnDelete(action=OnDeleteAction.CASCADE)
     private Plan plan;
 
-    @Column(nullable = false)
-    private LocalDate date;
 
     @Column(nullable = false)
     private int dayNumber;
+
 
     @OneToOne(targetEntity=DailyJourney.class)
     @JoinColumn(name="daily_journey_id")
@@ -36,9 +32,8 @@ public class NumberOfDay {
 
     public NumberOfDay() {}
 
-    public NumberOfDay(Plan plan, LocalDate date, int dayNumber) {
+    public NumberOfDay(Plan plan, int dayNumber) {
         this.plan = plan;
-        this.date = date;
         this.dayNumber = dayNumber;
     }
 
@@ -48,14 +43,6 @@ public class NumberOfDay {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public int getDayNumber() {

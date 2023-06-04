@@ -28,12 +28,6 @@ public class DailyJourneyService {
         return dailyJourneyList;
     }
 
-//    public List<DailyJourney> getDailyJourneysByDate(LocalDate date){
-//        List<DailyJourney> dailyJourneyList = new ArrayList<>();
-//        dailyJourneyRepository.findByDate(date).forEach(dailyJourneyList::add);
-//        return dailyJourneyList;
-//    }
-
 //    public List<DailyJourney> getDailyJourneysByPlanId(Long plan_id){
 //        List<DailyJourney> dailyJourneyList = new ArrayList<>();
 //        dailyJourneyRepository.findAllByPlanId(plan_id).forEach(dailyJourneyList::add);

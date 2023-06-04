@@ -13,10 +13,12 @@ public class View {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity=DailyJourney.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="dailyJourney_id", nullable=false)
-    @OnDelete(action=OnDeleteAction.CASCADE)
+    @ManyToOne(targetEntity=DailyJourney.class)
+    @JoinColumn(name="dailyJourney_id", updatable=false, insertable=false)
     private DailyJourney dailyJourney;
+
+    @Column(name="dailyJourney_id", nullable=false)
+    private Long dailyJourneyId;
 
     @Column
     private String category;  //to be foreign key
@@ -38,11 +40,11 @@ public class View {
     public void setId(Long id){ this.id = id;}
 
     public Long getDailyJourney() {
-        return dailyJourney.getId();
+        return dailyJourneyId;
     }
 
-    public void setDailyJourney(DailyJourney dailyJourney) {
-        this.dailyJourney = dailyJourney;
+    public void setDailyJourney(Long dailyJourneyId) {
+        this.dailyJourneyId = dailyJourneyId;
     }
 
     public String getCategory() {

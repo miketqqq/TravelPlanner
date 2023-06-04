@@ -18,17 +18,25 @@ public class ViewService {
     @Autowired
     private DailyJourneyRepository dailyJourneyRepository;
 
+
     public List<View> getAllViews(){
+        //for debug
         List<View> viewsList = new ArrayList<>();
         viewRepository.findAll().forEach(viewsList::add);
         return viewsList;
     }
 
+    public List<View> getAllViewsByJourneyId(Long journey_id){
+        List<View> viewsList = new ArrayList<>();
+        viewRepository.findAllByDailyJourneyId(journey_id).forEach(viewsList::add);
+        return viewsList;
+    }
+
     public View createViews(Long journey_id, View view){
-        Optional<DailyJourney> journey = dailyJourneyRepository.findById(journey_id);
-        journey.ifPresent(
-                view::setDailyJourney
-        );
+        Optional<DailyJourney> dailyJourney = dailyJourneyRepository.findById(journey_id);
+        if (dailyJourney.isEmpty()) return null;
+
+       view.setDailyJourney(journey_id);
         return viewRepository.save(view);
     }
 
@@ -42,13 +50,28 @@ public class ViewService {
         return viewsList;
     }
 
-    public View updateView(Long view_id, View view){
-        if (viewRepository.findById(view_id).isEmpty()) {
+    public View updateView(View view, Long view_id, Long journey_id){
+        if (viewRepository.findByIdAndDailyJourneyId(view_id, journey_id).isEmpty()) {
             return null;
         }
         view.setId(view_id);
+        view.setDailyJourney(journey_id);
         return viewRepository.save(view);
     }
+
+    public View swapView(Long view_id, Long otherJourneyId){
+        Optional<View> view = viewRepository.findById(view_id);
+        if (view.isEmpty()) return null;
+        Optional<DailyJourney> otherDailyJourney = dailyJourneyRepository.findById(otherJourneyId);
+        if (otherDailyJourney.isEmpty()) return null;
+
+
+        View newView = view.get();
+        newView.setDailyJourney(otherJourneyId);
+        return viewRepository.save(newView);
+
+    }
+
 
     public String removeView(Long view_id){
         viewRepository.deleteById(view_id);

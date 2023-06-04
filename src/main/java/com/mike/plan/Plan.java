@@ -2,6 +2,8 @@ package com.mike.plan;
 
 import com.mike.numberofday.NumberOfDay;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Plan {
     private int duration;
 
     @OneToMany(mappedBy = "plan")
+    @Cascade(CascadeType.ALL)
     private List<NumberOfDay> numberOfDayList;
 
 
