@@ -1,5 +1,6 @@
 package com.mike.dailyjourney;
 
+import com.mike.numberofday.NumberOfDay;
 import com.mike.view.View;
 import com.mike.view.ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,27 @@ public class DailyJourneyController {
 //        return dailyJourneyService.getDailyJourneysByPlanId(id);
 //    }
 
-    // no createDailyJourney is needed
+    @PostMapping("/")
+    public DailyJourney createDailyJourney(
+        @RequestBody DailyJourney dailyJourney ){
 
-    @PutMapping("/{id}")
-    public DailyJourney updateDailyJourney(@PathVariable("id") Long id, @RequestBody DailyJourney dailyJourney){
-        return dailyJourneyService.updateDailyJourney(id, dailyJourney);
+        return dailyJourneyService.createDailyJourney(dailyJourney);
+    }
+
+//    @PutMapping("/{id}")
+//    public DailyJourney updateDailyJourney(
+//        @PathVariable("id") Long id,
+//        @RequestBody DailyJourney dailyJourney ){
+//
+//        return dailyJourneyService.updateDailyJourney(id, dailyJourney);
+//    }
+
+    @PutMapping("/{journey_id}/swap/{other_journey_id}")
+    public String swapDailyJourney(
+        @PathVariable("journey_id") Long journey_id,
+        @PathVariable("other_journey_id") Long other_journey_id ){
+
+        return dailyJourneyService.swapDay(journey_id, other_journey_id);
     }
 
     // no delete is needed, but need to clear all views.
@@ -50,19 +67,19 @@ public class DailyJourneyController {
     }
 
 
-
-    //views related
+    // --------------------views related------------------------------
+    //<editor-fold desc="views">
     @GetMapping("/{journey_id}/views")
     public List<View> getAllView(
-        @PathVariable(name="journey_id") Long journey_id
-    ){
+        @PathVariable(name="journey_id") Long journey_id ){
+
         return viewService.getAllViewsByJourneyId(journey_id);
     }
 
     @GetMapping("/{journey_id}/views/{view_id}")
     public Optional<View> getView(
-        @PathVariable(name="view_id") Long view_id
-    ){
+        @PathVariable(name="view_id") Long view_id ){
+
         return viewService.getView(view_id);
     }
 
@@ -70,8 +87,8 @@ public class DailyJourneyController {
     @PostMapping("/{journey_id}/views")
     public View createView(
         @PathVariable("journey_id") Long journey_id,
-        @RequestBody View view
-    ){
+        @RequestBody View view ){
+
         return viewService.createViews(journey_id, view);
     }
 
@@ -80,23 +97,28 @@ public class DailyJourneyController {
     public View updateView(
         @PathVariable("journey_id") Long journey_id,
         @PathVariable("view_id") Long view_id,
-        @RequestBody View view
-    ){
+        @RequestBody View view ){
+
         return viewService.updateView(view, view_id, journey_id);
     }
 
-    @PutMapping("/{journey_id}/views/{view_id}/swap")
+    @PutMapping("/{journey_id}/views/{view_id}/swap/{other_view_id}")
     public View swapView(
-            @PathVariable("view_id") Long view_id,
-            @RequestBody Map<String, String> requestBody
-    ){
-        if ( !requestBody.containsKey("otherJourneyId")){
-            //throw error if no Journey id
-            return null;
-        }
+        @PathVariable("view_id") Long view_id,
+        @PathVariable("other_view_id") Long other_view_id ){
 
-        Long otherJourneyId = Long.parseLong(requestBody.get("otherJourneyId"));
-        return viewService.swapView(view_id, otherJourneyId);
+        return viewService.swapView(view_id, other_view_id);
 
     }
+
+    @DeleteMapping("/{journey_id}/views/{view_id}")
+    public String removeView(
+            @PathVariable("journey_id") Long journey_id,
+            @PathVariable("view_id") Long view_id
+    ){
+        return viewService.removeView(journey_id, view_id);
+    }
+
+    //</editor-fold>
+
 }

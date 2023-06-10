@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -65,17 +66,27 @@ public class ViewService {
         Optional<DailyJourney> otherDailyJourney = dailyJourneyRepository.findById(otherJourneyId);
         if (otherDailyJourney.isEmpty()) return null;
 
-
-        View newView = view.get();
-        newView.setDailyJourney(otherJourneyId);
-        return viewRepository.save(newView);
+        View swapingView = view.get();
+        swapingView.setDailyJourney(otherJourneyId);
+        return viewRepository.save(swapingView);
 
     }
 
+    public String removeView(Long journey_id, Long view_id){
+        Optional<DailyJourney> tempDailyJourney = dailyJourneyRepository.findById(journey_id);
+        Optional<View> tempView = viewRepository.findById(view_id);
+        try {
+            View view = tempView.get();
+            viewRepository.delete(view);
 
-    public String removeView(Long view_id){
-        viewRepository.deleteById(view_id);
-        return "ok";
+            DailyJourney dailyJourney = tempDailyJourney.get();
+            dailyJourney.getView().remove(view);
+            dailyJourneyRepository.save(dailyJourney);
+            return "ok";
+
+        } catch (NoSuchElementException e ){
+            return "no record is deleted";
+        }
     }
 
 }

@@ -2,9 +2,6 @@ package com.mike.view;
 
 import com.mike.dailyjourney.DailyJourney;
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.time.LocalTime;
 
 @Entity
@@ -23,7 +20,7 @@ public class View {
     @Column
     private String category;  //to be foreign key
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String viewpoint;
 
     @Column

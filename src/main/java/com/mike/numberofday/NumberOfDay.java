@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import java.time.LocalDate;
 
 @Entity @Table(name="number_of_day")
 public class NumberOfDay {
@@ -20,13 +19,10 @@ public class NumberOfDay {
     @JoinColumn(name="plan_id")  //updatable=false
     private Plan plan;
 
-
     @Column(nullable = false)
     private int dayNumber;
 
-
-    @OneToOne(targetEntity=DailyJourney.class)
-    @JoinColumn(name="daily_journey_id")
+    @OneToOne(targetEntity=DailyJourney.class, mappedBy="numberOfDay")
     @Cascade(CascadeType.ALL)
     private DailyJourney dailyJourney;
 
@@ -61,11 +57,11 @@ public class NumberOfDay {
         this.plan = plan;
     }
 
-    public DailyJourney getDailyJourney() {
-            return dailyJourney;
-    }
+//    public DailyJourney getDailyJourney() {
+//            return dailyJourney;
+//    }
 
-    public void setDailyJourney(DailyJourney dailyJourney) {
-        this.dailyJourney = dailyJourney;
-    }
+//    public void setDailyJourney(DailyJourney dailyJourney) {
+//        this.dailyJourney = dailyJourney;
+//    }
 }

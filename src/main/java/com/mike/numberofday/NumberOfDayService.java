@@ -19,7 +19,13 @@ public class NumberOfDayService {
     private DailyJourneyRepository dailyJourneyRepository;
 
 
-    public List<NumberOfDay> getAllDay(Long plan_id){
+    public List<NumberOfDay> getAllDays(){
+        List<NumberOfDay> days = new ArrayList<>();
+        numberOfDayRepository.findAll().forEach(days::add);
+        return days;
+    }
+
+    public List<NumberOfDay> getAllDaysByPlanId(Long plan_id){
         List<NumberOfDay> days = new ArrayList<>();
         numberOfDayRepository.findAllByPlanId(plan_id).forEach(days::add);
         return days;
@@ -30,20 +36,7 @@ public class NumberOfDayService {
     }
 
 
-    public NumberOfDay swapDay(Long plan_id, int dayNumber, int otherDayNumber){
-        NumberOfDay thisDay = numberOfDayRepository.findByPlanIdAndDayNumber(plan_id, dayNumber);
-        NumberOfDay otherDay = numberOfDayRepository.findByPlanIdAndDayNumber(plan_id, otherDayNumber);
 
-        DailyJourney thisJourney = thisDay.getDailyJourney();
-        DailyJourney otherJourney = otherDay.getDailyJourney();
-
-        thisDay.setDailyJourney(otherJourney);
-        otherDay.setDailyJourney(thisJourney);
-        numberOfDayRepository.save(thisDay);
-        numberOfDayRepository.save(otherDay);
-
-        return thisDay;
-    }
 
 
 

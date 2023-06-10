@@ -1,17 +1,16 @@
 package com.mike.dailyjourney;
 
-import com.mike.plan.Plan;
-import com.mike.plan.PlanRepository;
-import com.mike.view.View;
+
+import com.mike.numberofday.NumberOfDay;
 import com.mike.view.ViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class DailyJourneyService {
@@ -34,23 +33,56 @@ public class DailyJourneyService {
 //        return dailyJourneyList;
 //    }
 
-    // no newDailyJourney is needed.
+    public DailyJourney createDailyJourney(DailyJourney dailyJourney){
+        return dailyJourneyRepository.save(dailyJourney);
+    }
 
     public Optional<DailyJourney> getDailyJourney(Long id){
         return dailyJourneyRepository.findById(id);
     }
 
-    public DailyJourney updateDailyJourney(Long id, DailyJourney dailyJourney){
-        if (dailyJourneyRepository.findById(id).isEmpty()) {
-            return null;
+//    public DailyJourney updateDailyJourney(Long id, DailyJourney dailyJourney){
+//        if (dailyJourneyRepository.findById(id).isEmpty()) {
+//            return null;
+//        }
+//        dailyJourney.setId(id);
+//        return dailyJourneyRepository.save(dailyJourney);
+//    }
+
+    public String swapDay(Long journey_id, Long other_journey_id){
+        Optional<DailyJourney> thisFind = dailyJourneyRepository.findById(journey_id);
+        Optional<DailyJourney> otherFind = dailyJourneyRepository.findById(other_journey_id);
+
+        String swap = "Success";
+        try {
+            DailyJourney thisDailyJourney = thisFind.get();
+            DailyJourney otherDailyJourney = otherFind.get();
+
+            Long thisNumberOfDayID = thisDailyJourney.getNumberOfDayID();
+            Long otherNumberOfDayID = otherDailyJourney.getNumberOfDayID();
+
+            thisDailyJourney.setnumberOfDayID(otherNumberOfDayID);
+            otherDailyJourney.setnumberOfDayID(thisNumberOfDayID);
+            dailyJourneyRepository.saveAll(List.of(thisDailyJourney, otherDailyJourney));
+
+        } catch (NoSuchElementException e){
+            swap = "Fail: incorrect journey_ids";
         }
-        dailyJourney.setId(id);
-        return dailyJourneyRepository.save(dailyJourney);
+
+        return swap;
     }
 
+
     public String clearDailyJourney(Long journey_id){
-        Iterable<View> views = viewRepository.findAllByDailyJourneyId(journey_id);
-        viewRepository.deleteAll(views);
-        return "ok";
+        AtomicReference<String> responseString = new AtomicReference<>("cleared all");
+        Optional<DailyJourney> dailyJourney = dailyJourneyRepository.findById(journey_id);
+        dailyJourney.ifPresentOrElse(
+            journey -> {
+                journey.getView().clear();
+                dailyJourneyRepository.save(journey);
+            },
+            () -> responseString.set("no record is deleted")
+        );
+        return responseString.toString();
     }
 }

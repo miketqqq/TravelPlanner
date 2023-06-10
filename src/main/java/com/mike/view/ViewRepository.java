@@ -10,6 +10,10 @@ public interface ViewRepository extends CrudRepository<View, Long> {
 
     Optional<View> findByIdAndDailyJourneyId(Long id, Long journey_id);
 
+    int countByDailyJourneyId(Long journey_id);
+
     void deleteByDailyJourneyId(Long journey_id);
+
+    void deleteAllByDailyJourneyId(Long journey_id);
 
 }

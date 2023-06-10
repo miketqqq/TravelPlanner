@@ -16,20 +16,20 @@ public class Plan {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String country;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private LocalDate endDate;
 
     //auto generated when plan is created.
-    @Column(nullable = false)
+    @Column(nullable=false)
     private int duration;
 
     @OneToMany(mappedBy = "plan")

@@ -16,20 +16,24 @@ public class DailyJourney {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(targetEntity=NumberOfDay.class, mappedBy="dailyJourney")
+    @OneToOne(targetEntity=NumberOfDay.class)
+    @JoinColumn(name="number_of_day_id", insertable=false, updatable=false)
     private NumberOfDay numberOfDay;
 
-    @OneToMany(mappedBy="dailyJourney", fetch=FetchType.EAGER)
+    @Column(name="number_of_day_id", nullable=false)
+    private Long numberOfDayID;
+
+    @OneToMany(mappedBy="dailyJourney", fetch=FetchType.EAGER, orphanRemoval=true)
     @Cascade(CascadeType.ALL)
     private List<View> View;
 
 
-    public DailyJourney() {
-    }
+    public DailyJourney() {}
 
     public DailyJourney(NumberOfDay numberOfDay) {
         this.numberOfDay = numberOfDay;
     }
+
 
     public Long getId() {
         return id;
@@ -39,12 +43,12 @@ public class DailyJourney {
         this.id = id;
     }
 
-    public int getDayCount() {
-        return numberOfDay.getDayNumber();
+    public Long getNumberOfDayID() {
+        return numberOfDayID;
     }
 
-    public void setDayCount(NumberOfDay numberOfDay) {
-        this.numberOfDay = numberOfDay;
+    public void setnumberOfDayID(Long numberOfDayID) {
+        this.numberOfDayID = numberOfDayID;
     }
 
     public List<View> getView() {

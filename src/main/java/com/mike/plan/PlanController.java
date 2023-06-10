@@ -50,7 +50,7 @@ public class PlanController {
     // days related
     @GetMapping("/{plan_id}/days")
     public List<NumberOfDay> getAllDay(@PathVariable("plan_id") Long plan_id){
-        return numberOfDayService.getAllDay(plan_id);
+        return numberOfDayService.getAllDaysByPlanId(plan_id);
     }
 
     @GetMapping("/{plan_id}/days/{dayNumber}")
@@ -61,19 +61,7 @@ public class PlanController {
         return numberOfDayService.getDay(plan_id, dayNumber);
     }
 
-    @PutMapping("/{plan_id}/days/{dayNumber}")
-    public NumberOfDay updateDay(
-        @PathVariable("plan_id") Long plan_id,
-        @PathVariable("dayNumber") int dayNumber,
-        @RequestBody Map<String, Integer> requestBody
-    ){
-        if (requestBody.isEmpty() || requestBody.get("isSwap").equals(0)){
-            return null;
-        }
 
-        int otherDayNumber = requestBody.get("otherDayNumber");
-        return numberOfDayService.swapDay(plan_id, dayNumber, otherDayNumber);
-    }
 
 
 }
